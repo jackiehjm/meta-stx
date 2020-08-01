@@ -1,3 +1,18 @@
+#
+## Copyright (C) 2019 Wind River Systems, Inc.
+#
+#  Licensed under the Apache License, Version 2.0 (the "License");
+#  you may not use this file except in compliance with the License.
+#  You may obtain a copy of the License at
+#
+#      http://www.apache.org/licenses/LICENSE-2.0
+#
+#  Unless required by applicable law or agreed to in writing, software
+#  distributed under the License is distributed on an "AS IS" BASIS,
+#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#  See the License for the specific language governing permissions and
+#  limitations under the License.
+
 DESCRIPTION = "stx-config-files"
 
 PROTOCOL = "https"
@@ -486,11 +501,13 @@ pkg_postinst_ontarget_openssh-config() {
 	install -m 644 ${SRCPATH}/ssh_config    ${datadir}/starlingx/ssh_config
 	install -m 600 ${SRCPATH}/sshd_config   ${datadir}/starlingx/sshd_config
 
-	# remove the unsopported and deprecated options
+	# remove the unsupported and deprecated options
 	sed -i -e 's/^\(GSSAPIAuthentication.*\)/#\1/' \
 	       -e 's/^\(GSSAPICleanupCredentials.*\)/#\1/' \
 	       -e 's/^\(UsePrivilegeSeparation.*\)/#\1/' \
 	       ${datadir}/starlingx/sshd_config
+
+	sed -i -e 's/\(GSSAPIAuthentication yes\)/#\1/' ${datadir}/starlingx/ssh_config
 	
 	cp -f ${datadir}/starlingx/ssh_config  ${sysconfdir}/ssh/ssh_config
 	cp -f ${datadir}/starlingx/sshd_config ${sysconfdir}/ssh/sshd_config
